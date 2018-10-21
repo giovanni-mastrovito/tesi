@@ -24,9 +24,11 @@ with open(in_file, 'rb') as csvfile:
 			#words = row.split('\t')
 			scores.append(''.join(row[1]))
 
-#write on csv file scores 	
-#id = 0	
-#id_comment = 'comm_' + str(id)
+pos = 0
+neg = 0
+nn = 0
+dlt = 0
+
 with open(out_file, 'wb') as csvfile:
 	writer = csv.writer(csvfile, quoting=csv.QUOTE_NONE, delimiter='\t', escapechar=' ')
 	for s in scores:
@@ -37,16 +39,17 @@ with open(out_file, 'wb') as csvfile:
 		
 		if somma > 0:
 			label = "Positive"
+			pos = pos + 1
 		elif somma < 0:
 			label = "Negative"
+			neg = neg + 1
 		else:
 			if int(word[0]) < 4:
 				label = "Neutral"
+				nn = nn + 1
 			else:
+				dlt = dlt + 1
 				continue
 		writer.writerow([word[0],word[1],label])
-
-		#print (word[1] + ' || ' + word[2] + '-->' + str(somma))
-		#print(comments[0])
-		#id = id + 1
-#		id_comment = 'comm_' + str(id)
+	writer.writerow(["Positive:",pos,"","Negative:",neg,"","Neutral:",nn,"","Deleted:",dlt,"","Total:",pos+neg+nn+dlt])
+	print ("Positive: " + str(pos) + "\nNegative: " + str(neg) + "\nNeutral: " + str(nn) + "\nDeleted: " + str(dlt) + "\nTotal: " + str(pos+neg+nn+dlt))

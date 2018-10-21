@@ -24,23 +24,28 @@ with open(in_file, 'rb') as csvfile:
 			#words = row.split('\t')
 			#print (row[3])
 			labels.append(''.join(row[3]))
-#write on csv file labels 	
-#id = 0	
-#id_comment = 'comm_' + str(id)
+
+pos = 0
+neg = 0
+nn = 0
+other = 0
 with open(out_file, 'wb') as csvfile:
 	writer = csv.writer(csvfile, quoting=csv.QUOTE_NONE, delimiter='\t', escapechar=' ')
 	for l in labels:
 		
 		if (l == "Neutral (LA)") or (l == "Neutral (HA)") or (l == "Neutral"):
 			label = "Neutral"
+			nn = nn + 1
 		elif (l == "Stressed") or (l == "Depressed") or (l == "Neg Valence"):
 			label = "Negative"
+			neg = neg + 1
 		elif (l == "Excited") or (l == "Relaxed") or (l == "Pos Valence"):
 			label = "Positive"
+			pos = pos + 1
 		else:
 			label = "$$"
+			other = other + 1
 		writer.writerow([l,label])
-		#print (word[1] + ' || ' + word[2] + '-->' + str(somma))
-		#print(comments[0])
-		#id = id + 1
-#		id_comment = 'comm_' + str(id)
+		
+	writer.writerow(["Positive:",pos,"","Negative:",neg,"","Neutral:",nn,"","Other:",other,"","Total:",pos+neg+nn+other])
+	print ("Positive: " + str(pos) + "\nNegative: " + str(neg) + "\nNeutral: " + str(nn) + "\nOther: " + str(other) + "\nTotal: " + str(pos+neg+nn+other))	
