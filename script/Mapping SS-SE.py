@@ -49,7 +49,7 @@ with open(out_file, 'wb') as csvfile:
 				nn = nn + 1
 			else:
 				dlt = dlt + 1
-				continue
+				label = "Deleted"
 		writer.writerow([word[0],word[1],label])
 	writer.writerow(["Positive:",pos,"","Negative:",neg,"","Neutral:",nn,"","Deleted:",dlt,"","Total:",pos+neg+nn+dlt])
 	print ("Positive: " + str(pos) + "\nNegative: " + str(neg) + "\nNeutral: " + str(nn) + "\nDeleted: " + str(dlt) + "\nTotal: " + str(pos+neg+nn+dlt))
